@@ -2,14 +2,24 @@ library(x3pr)
 library(x3prplus)
 library(dplyr)
 
-subset_signature <- function(signature, minval = min(signature$y), maxval = max(signature$y)) {
-    minval <- signature$y[which.min(abs(minval - signature$y))]
-    maxval <- signature$y[which.min(abs(maxval - signature$y))]
+subset_bullet <- function(fortified, minval = min(fortified$y), maxval = max(fortified$y)) {
+    minval <- fortified$y[which.min(abs(minval - fortified$y))]
+    maxval <- fortified$y[which.min(abs(maxval - fortified$y))]
     
-    signature %>%
+    result <- fortified %>%
         filter(y >= minval, y <= maxval)
+    
+    attr(result, "info") <- length(unique(result$y))
+    
+    return(result)
 }
 
-path <- "~/GitHub/imaging-paper/app/images/Hamby252_3DX3P1of2/Br1 Bullet 1-1.x3p"
-signature <- get_crosscut(path)
-subbed <- subset_signature(signature, min = 0, max = 100)
+subset_all_bullets <- function(paths) {
+    test <- lapply(paths, function(path) {
+        bullet <- fortify_x3p(read.x3p(path))
+        subbed <- subset_bullet(bullet, min = 0, max = 500)
+        
+        return(unfortify_x3p(subbed))
+    })
+}
+
