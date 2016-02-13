@@ -9,17 +9,32 @@ subset_bullet <- function(fortified, minval = min(fortified$y), maxval = max(for
     result <- fortified %>%
         filter(y >= minval, y <= maxval)
     
-    attr(result, "info") <- length(unique(result$y))
+    attr(result, "info")$num.lines <- length(unique(result$y))
     
     return(result)
 }
 
 subset_all_bullets <- function(paths) {
-    test <- lapply(paths, function(path) {
+    lapply(paths, function(path) {
         bullet <- fortify_x3p(read.x3p(path))
         subbed <- subset_bullet(bullet, min = 0, max = 500)
         
-        return(unfortify_x3p(subbed))
+        unfort <- unfortify_x3p(subbed)
+        attr(unfort, "path") <- path
+        
+        return(unfort)
     })
 }
 
+paths <- file.path("~/GitHub/imaging-paper/app/images/Hamby252_3DX3P1of2", 
+                   dir("~/GitHub/imaging-paper/app/images/Hamby252_3DX3P1of2"))
+all_subsets <- subset_all_bullets(paths)
+
+dir.create("~/GitHub/imaging-paper/app/degraded_images/Hamby252_3DX3P1of2", recursive = TRUE)
+lapply(all_subsets, function(sub) {
+    myfname <- basename(attr(sub, "path"))
+    myfname <- gsub(" ", "_", myfname)
+                        
+    write.x3p(sub$header.info, sub$surface.matrix, fname = myfname,
+              move.to.directory = "~/GitHub/imaging-paper/app/degraded_images/Hamby252_3DX3P1of2")
+})
