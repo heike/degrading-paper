@@ -5,8 +5,8 @@ library(ggplot2)
 library(gridExtra)
 library(zoo)
 
-knowndatadir <- "~/Downloads/Hamby252_3DX3P1of2/"
-unknowndatadir <- "~/Downloads/Hamby252_3DX3P2of2/"
+knowndatadir <- "~/GitHub/imaging-paper/app/degraded_images/Hamby252_3DX3P1of2/"
+unknowndatadir <- "~/GitHub/imaging-paper/app/degraded_images/Hamby252_3DX3P2of2/"
 
 
 ###############
