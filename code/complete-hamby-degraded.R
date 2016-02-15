@@ -81,13 +81,15 @@ all_bullets <- lapply(as.character(ccs$path), function(x) {
 
 knowns <- all_bullets[1:120]
 unknowns <- all_bullets[121:210]
-bullets_processed <- lapply(all_bullets, function(bul) {
+bullets_processed <- lapply(c(knowns, unknowns), function(bul) {
     cat("Computing processed bullet", basename(bul$path), "\n")
-    processBullets(bullet = bul, name = bul$path, x = ccs$cc[which(ccs$path == bul$path)])
+    mycc <- ccs$cc[which(ccs$path == bul$path)]
+    if (is.na(mycc)) mycc <- 100
+    processBullets(bullet = bul, name = bul$path, x = mycc)
 })
 names(bullets_processed) <- as.character(ccs$path)
 
-bullets_smoothed <- bullets_processed %>% bind_rows %>% bulletSmooth
+bullets_smoothed <- bullets_processed %>% bind_rows %>% bulletSmooth(span = 0.15)
 
 for (span in c(10, 20, 25, 30, 40)) {
     dataStr <- sprintf("data-new-%d-25", span) # using crosscuts-25.csv
