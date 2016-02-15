@@ -102,7 +102,7 @@ for (span in c(10, 20, 25, 30, 40)) {
             br1 <- filter(bullets_smoothed, bullet == x$path)
             br2 <- filter(bullets_smoothed, bullet == unknowns[[j]]$path)
             
-            bulletGetMaxCMSXXX(br1, br2, span=span)
+            bulletGetMaxCMS(br1, br2, span=span)
         })
         save(reslist, file=file.path(dataStr, sprintf("unkn%d.RData", j)))
     }
