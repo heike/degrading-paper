@@ -17,7 +17,7 @@ subset_bullet <- function(fortified, minval = min(fortified$y), maxval = max(for
 subset_all_bullets <- function(paths) {
     lapply(paths, function(path) {
         bullet <- fortify_x3p(read.x3p(path))
-        subbed <- subset_bullet(bullet, min = 1000, max = 2000)
+        subbed <- subset_bullet(bullet, min = 750, max = 1750)
         
         unfort <- unfortify_x3p(subbed)
         attr(unfort, "path") <- path
