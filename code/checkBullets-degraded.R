@@ -4,8 +4,8 @@ library(dplyr)
 library(ggplot2)
 library(zoo)
 
-knowndatadir <- "~/Downloads/Hamby252_3DX3P1of2/"
-unknowndatadir <- "~/Downloads/Hamby252_3DX3P2of2/"
+knowndatadir <- "~/GitHub/imaging-paper/app/degraded_images/Hamby252_3DX3P1of2/"
+unknowndatadir <- "~/GitHub/imaging-paper/app/degraded_images/Hamby252_3DX3P2of2/"
 
 knowns <- file.path(knowndatadir, dir(knowndatadir, pattern="x3p"))
 unknowns <- file.path(unknowndatadir, dir(unknowndatadir))
@@ -13,7 +13,8 @@ unknowns <- file.path(unknowndatadir, dir(unknowndatadir))
 if (!file.exists("csvs/crosscuts.csv")) {
 crosscuts <- sapply(c(knowns, unknowns), function(x) {
   cat(x)
-  crosscut <- bulletCheckCrossCut(x, x = seq(100, 750, by=25))
+  crosscut <- bulletCheckCrossCut(x, xlimits = seq(50, 450, by=25))
+  cat("\n")
   cat(crosscut)
   cat("\n")
   crosscut
