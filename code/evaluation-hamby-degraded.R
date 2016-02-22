@@ -66,7 +66,7 @@ CCFs$b2 <- sapply(splits, function(x) x[length(x)])
 CCFs$b2 <- gsub(".x3p","", CCFs$b2)
 
 
-matches <- read.csv("csvs/matches.csv", header=FALSE, stringsAsFactors = FALSE)
+matches <- read.csv("~/GitHub/imaging-paper/csvs/matches.csv", header=FALSE, stringsAsFactors = FALSE)
 matches$V3 <- paste("Ukn Bullet",matches$V3)
 matches$V4 <- paste("Ukn Bullet",matches$V4)
 matches$V5 <- paste("Ukn Bullet",matches$V5)
@@ -75,6 +75,7 @@ matches$id <- 1:nrow(matches)
 library(reshape2)
 mm <- melt(matches, id.var="id")
 mm <- subset(mm, value != "Ukn Bullet ")
+mm$value <- gsub(" ", "_", mm$value)
 
 CCFs <- merge(CCFs, mm[,c("id","value")], by.x="b1", by.y="value")
 CCFs <- merge(CCFs, mm[,c("id","value")], by.x="b2", by.y="value")
@@ -103,7 +104,7 @@ imp1b <- data.frame(importance(rtrees1b))
 
 
 
-write.csv(CCFs, file=file.path(dataStr, "bullet-stats-cms.csv"), row.names=FALSE)
+write.csv(CCFs, file=file.path(dataStr, "bullet-stats.csv"), row.names=FALSE)
 
 
 ##################################################
@@ -201,8 +202,8 @@ prp(rp1, extra = 101, fallen.leaves=TRUE)
 # throw in all three evaluations into the mix:
 
 bstats <- NULL
-for (i in c(5, 10, 15, 20, 25, 30, 35, 40)) {
-  dataStr <- sprintf("data-%d-25", i)
+for (i in c(25)) {
+  dataStr <- sprintf("data-new-%d-25", i)
   temp <- read.csv(file.path(dataStr, "bullet-stats.csv"))
   includes <- setdiff(names(temp), c("b1", "b2", "data", "resID", "id.x", "id.y"))
   temp$diffx <- with(temp, abs(x1-x2))
